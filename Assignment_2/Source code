@@ -1,0 +1,59 @@
+import math
+
+user_name = str(input("Who are we calculating grades for?\n"))
+user_labs = int(input("Enter your Labs grade.\n"))
+user_lab_exams = int(input("Enter your Exams grade.\n"))
+user_attendance = int(input("Enter your Attendance grade.\n"))
+
+while user_name == user_name:
+    if user_labs >= 0 and user_labs <= 100:
+        break
+    elif user_labs < 0:
+        user_labs = user_labs * 0
+        print("The lab value should have been zero or greater. It has been changed to 0.")
+    elif user_labs > 100:
+        user_labs = (user_labs * 0) + 100
+        print("The lab value should have been 100 or less. It has been changed to 100.")
+    else:
+        print("This is not a viable value.")
+while user_labs >= 0 and user_labs <= 100:
+    if user_lab_exams >= 0 and user_lab_exams <= 100:
+        break
+    elif user_lab_exams < 0:
+        user_lab_exams = user_lab_exams * 0
+        print("The exam value should have been zero or greater. It has been changed to 0.")
+    elif user_lab_exams > 100:
+        user_lab_exams = (user_lab_exams * 0) + 100
+        print("The exam value should have been 100 or less. It has been changed to 100.")
+    else:
+        print("This is not a viable value.")
+while user_lab_exams >= 0 and user_lab_exams <= 100:
+    if user_attendance >= 0 and user_attendance <= 100:
+        break
+    elif user_attendance < 0:
+        user_attendance = user_attendance * 0
+        print("The attendance value should have been zero or greater. It has been changed to 0.")
+    elif user_attendance > 100:
+        user_attendance = (user_attendance * 0) + 100
+        print("The attendance value should have been 100 or less. It has been changed to 100.")
+    else:
+        print("This is not a viable value.")
+
+weighted_grade = float((user_labs * 0.7) + (user_lab_exams * 0.2) + (user_attendance * 0.1))
+
+print("The weighted grade for", user_name, "is ", weighted_grade)
+if weighted_grade >= 0 and weighted_grade <= 100:
+    if weighted_grade >= 90 and weighted_grade <= 100:
+        print(user_name, "has a letter grade of A")
+    elif weighted_grade >= 80 and weighted_grade <= 89:
+        print(user_name, "has a letter grade of B")
+    elif weighted_grade >= 70 and weighted_grade <= 79:
+        print(user_name, "has a letter grade of C")
+    elif weighted_grade >= 60 and weighted_grade <= 69:
+        print(user_name, "has a letter grade of D")
+    elif weighted_grade >= 0 and weighted_grade <= 59:
+        print(user_name, "has a letter grade of F")
+    else:
+        print()
+
+print("**** Thanks for using the Lab grade calculator ****")
