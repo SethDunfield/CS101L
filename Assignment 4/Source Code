@@ -1,0 +1,89 @@
+#Seth Dunfield, CompSci 101L, October 1st, 2021
+
+import random
+import math
+
+def play_again():
+    again = str(input("Do you want to play again, Y for YES, N for NO\n"))
+    if again == 'Y' or again == 'YES':
+        return True
+    elif again == 'N' or again == 'NO':
+        return False
+    else:
+        print("You must enter Y/YES/N/NO to continue. Please try again.")
+        again = str(input("Do you want to play again, Y for YES, N for NO\n"))
+
+def get_wager(bank: int):
+    wager = int(input("How many chips do you want to wager?\n"))
+    if wager > 0 and wager <= bank:
+        return wager
+    elif wager > 0 and wager > bank:
+        print("The wager amount cannot be greater than how much you have.")
+        wager = int(input("How many chips do you want to wager?\n"))
+    else:
+        print("The wager must be greater than 0. Please enter again.")
+        wager = int(input("How many chips do you want to wager?\n"))
+
+def get_slot_results():
+    random_num1 = random.randint(1, 10)
+    random_num2 = random.randint(1, 10)
+    random_num3 = random.randint(1, 10)
+    return random_num1, random_num2, random_num3
+
+def get_matches(reel1, reel2, reel3):
+    if reel1 == reel2 and reel1 == reel3:
+        matches = 3
+        return matches
+    elif reel1 == reel2 or reel1 == reel3:
+        matches = 2
+        return matches
+    else:
+        return 0
+
+def get_bank():
+    chips = int(input("How many chips do you want to start?\n"))
+    if chips > 0 and chips < 101:
+        return chips
+    elif chips < 0:
+        print("Too low a value, you can only choose 1 - 100 chips")
+        chips = int(input("How many chips do you want to start?\n"))
+    else:
+        print("Too high a value, you can only choose 1 - 100 chips")
+        chips = int(input("How many chips do you want to start?\n"))
+        
+def get_payout(wager, matches):
+    if matches == 3:
+        return (wager * 10) - wager
+    elif matches == 2:
+        return (wager * 3) - wager
+    else:
+        return wager * -1     
+
+if __name__ == "__main__":
+
+    playing = True
+    while playing:
+
+        bank = get_bank()
+        spins = 0
+        bank_list = []
+
+        while bank > 0:  
+            
+            wager = get_wager(bank)
+
+            reel1, reel2, reel3 = get_slot_results()
+            bank_list.append(bank)
+            matches = get_matches(reel1, reel2, reel3)
+            payout = get_payout(wager, matches)
+            bank = bank + payout
+            spins += 1 
+            print("Your spin", reel1, reel2, reel3)
+            print("You matched", matches, "reels")
+            print("You won/lost", payout)
+            print("Current bank", bank)
+            print()
+           
+        print("You lost all", bank_list[0], "in", spins , "spins") 
+        print("The most chips you had was", max(bank_list))
+        playing = play_again()
