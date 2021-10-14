@@ -1,0 +1,68 @@
+#Seth Dunfield, CompSci 101-004L, October 16th, 2021
+import string
+import math
+
+def Encrypt(string_text, int_key):
+    '''Caesar-encrypts string using specified key.'''
+    encryption = ""
+    for i in string_text:
+        if i.isupper():
+            char_value = ord(i)
+            wrap = (char_value - ord("A"))
+            new_wrap = (wrap + int_key) % 26
+            after_wrap = (new_wrap + ord("A"))
+            char_new = chr(after_wrap)
+            encryption += char_new
+        else:
+            encryption += i
+    return encryption
+
+def Decrypt(string_text, int_key):
+    '''Decrypts Caesar-encrypted string with specified key.'''
+    decryption = ""
+    for i in string_text:
+        if i.isupper():
+            char_value = ord(i)
+            wrap = (char_value - ord("A"))
+            new_wrap = (wrap - int_key) % 26
+            after_wrap = (new_wrap + ord("A"))
+            char_new = chr(after_wrap)
+            decryption += char_new
+        else:
+            decryption += i
+    return decryption
+
+def Get_input():
+    '''Interacts with user. Returns one of: '1', '2', '3', '4'.'''
+    choice = input("Enter your selection ==> ")
+    return choice
+
+def Print_menu():
+    '''Prints menu. No user interaction.'''
+    print("MAIN MENU:")
+    print("1\) Encode a string")
+    print("2\) Decode a string")
+    print("Q\) Quit")
+
+def main():
+    Again = True
+    while Again:
+        Choice = Get_input()
+        if Choice == '1':
+            Plaintext = input("Enter (brief) text to encrypt: ").upper()
+            Key = int(input("Enter the number to shift letters by: "))
+            Ciphertext = Encrypt(Plaintext, Key)
+            print("Encrypted:", Ciphertext)
+        elif Choice == '2':
+            Ciphertext = input("Enter (brief) text to decrypt: ").upper()
+            Key = int(input("Enter the number to shift letters by: "))
+            Plaintext = Decrypt(Ciphertext, Key)
+            print("Decrypted:", Plaintext)
+        elif Choice == 'Q':
+            print("Have an ordinary day.")
+            Again = False
+        else:
+            print("Error, you must enter either 1 2 or Q")
+
+# our entire program:
+main()
