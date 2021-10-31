@@ -1,0 +1,281 @@
+#Seth Dunfield, CompSci-101L, October 30st, 2021
+import math
+
+def get_input():
+    '''Interacts with user. Returns one of either 1 2 3 4 5 6 D or Q.'''
+    choice = input("==> ")
+    return choice
+
+def get_test(user_input, test_call):
+    '''Should be able to add/append a test score to a list of test scores, remove a test score, or clear the test scores.'''
+    if user_input == "1":
+        test_score = float(input("Enter the new Test score 0 - 100.\n==>"))
+        if test_score >= 0:
+            test_scores.append(test_score)
+            print("Added:", test_score)
+        else:
+            print("Test score must be 0 - 100.")
+    elif user_input == "2":
+        remove_test_score = float(input("Which Test score should be removed?\n==>"))
+        if remove_test_score in test_scores:
+            test_scores.remove(remove_test_score)
+            print("Removed:", remove_test_score)
+        else:
+            print("Test score:", remove_test_score, "not found.")
+    elif user_input == "3":
+        test_scores.clear()
+        removed_statement = print("Test scores have been cleared.")
+        return removed_statement
+
+def get_program(user_input, program_call):
+    '''Should be able to add/append a program score to a list of program scores, remove a program score, or clear the program scores.'''
+    if user_input == "4":
+        program_score = float(input("Enter the new Program score 0 - 100.\n==>"))
+        if program_score >= 0:
+            program_scores.append(program_score)
+            print("Added:", program_score)
+        else:
+            print("Program score must be 0 - 100.")
+    elif user_input == "5":
+        remove_program_score = float(input("Which Program score should be removed?\n==>"))
+        if remove_program_score in program_scores:
+            program_scores.remove(remove_program_score)
+            print("Removed:", remove_program_score)
+        else:
+            print("Program score:", remove_program_score, "not found.")
+    elif user_input == "6":
+        program_scores.clear()
+        removed_statement = print("Program scores have been cleared.")
+        return removed_statement
+
+def display_scores(user_input, test_call, program_call):
+    '''Displays different types of categories for tests and programs, including: the number of tests and programs the student has inputted, the minimum test and program score, 
+    the max test and program score, the averages of both, the standard deviation of both, and calculate and return the final weighted score.'''
+    if user_input == 'D' or user_input == 'd':
+        if len(test_scores) == 0 and len(program_scores) == 0:
+            chart_line1 = print("Type", "{:>11}{:>10}{:>10}{:>10}{:>10}".format("#", "min", "max", "avg", "std"))
+            chart_line2 = print("=" * 56)
+            chart_line3 = print("Tests", "{:>10}{:>10}{:>10}{:>10}{:>10}".format("0", "n/a", "n/a", "n/a", "n/a"))
+            chart_line4 = print("Programs", "{:>7}{:>10}{:>10}{:>10}{:>10}".format("0", "n/a", "n/a", "n/a", "n/a"))
+            print()
+            return print("The weighted scores is 0.00")
+
+        elif len(test_scores) == 1 and len(program_scores) == 0:
+            number_of_tests = len(test_scores)
+            min_test = min(test_scores)
+            max_test = max(test_scores)
+
+            sum = 0
+            for i in test_scores:
+                sum += i
+            mean_test = sum / len(test_scores)
+
+            chart_line1 = print("Type", "{:>11}{:>10}{:>10}{:>10}{:>10}".format("#", "min", "max", "avg", "std"))
+            chart_line2 = print("=" * 56)
+            chart_line3 = print("Tests", "{:>10}{:>10.2f}{:>10.2f}{:>10.2f}{:>10}".format(number_of_tests, min_test, max_test, mean_test, "n/a"))
+            chart_line4 = print("Programs", "{:>7}{:>10}{:>10}{:>10}{:>10}".format("0", "n/a", "n/a", "n/a", "n/a"))
+            print()
+            weighted_test1 = ((mean_test * 0.6) + 0)
+            return print("The weighted scores is", "{:.2f}".format(weighted_test1))
+
+        elif len(test_scores) == 0 and len(program_scores) == 1:
+            number_of_programs = len(program_scores)
+            min_program = min(program_scores)
+            max_program = max(program_scores)
+            
+            sum2 = 0
+            for x in program_scores:
+                sum2 += x
+            mean_program = sum2 / len(program_scores)
+
+            chart_line1 = print("Type", "{:>11}{:>10}{:>10}{:>10}{:>10}".format("#", "min", "max", "avg", "std"))
+            chart_line2 = print("=" * 56)
+            chart_line3 = print("Tests", "{:>10}{:>10}{:>10}{:>10}{:>10}".format("0", "n/a", "n/a", "n/a", "n/a"))
+            chart_line4 = print("Programs", "{:>7}{:>10.2f}{:>10.2f}{:>10.2f}{:>10}".format(number_of_programs, min_program, max_program, mean_program, "n/a"))
+            print()
+            weighted_program1 = (0 + (mean_program * 0.4))
+            return print("The weighted scores is", "{:.2f}".format(weighted_program1))
+
+        elif (len(test_scores) == 0 or len(test_scores) == 1) and len(program_scores) >= 2:
+            number_of_programs = len(program_scores)
+            min_program = min(program_scores)
+            max_program = max(program_scores)
+            
+            sum2 = 0
+            for x in program_scores:
+                sum2 += x
+            mean_program = sum2 / len(program_scores)
+
+            count_under_sqrt = 0
+            for x in program_scores:
+                count_under_sqrt += ((x - mean_program) ** 2)
+            std_program = (math.sqrt(count_under_sqrt / 4))
+            
+            if len(test_scores) == 0:
+                chart_line1 = print("Type", "{:>11}{:>10}{:>10}{:>10}{:>10}".format("#", "min", "max", "avg", "std"))
+                chart_line2 = print("=" * 56)
+                chart_line3 = print("Tests", "{:>10}{:>10}{:>10}{:>10}{:>10}".format("0", "n/a", "n/a", "n/a", "n/a"))
+                chart_line4 = print("Programs", "{:>7}{:>10.2f}{:>10.2f}{:>10.2f}{:>10.2f}".format(number_of_programs, min_program, max_program, mean_program, std_program))
+                print()
+                weighted_program2_test0 = (0 + (mean_program * 0.4))
+                return print("The weighted scores is", "{:.2f}".format(weighted_program2_test0))
+            elif len(test_scores) == 1:
+                number_of_tests = len(test_scores)
+                min_test = min(test_scores)
+                max_test = max(test_scores)
+
+                sum = 0
+                for i in test_scores:
+                    sum += i
+                mean_test = sum / len(test_scores)
+                
+                chart_line1 = print("Type", "{:>11}{:>10}{:>10}{:>10}{:>10}".format("#", "min", "max", "avg", "std"))
+                chart_line2 = print("=" * 56)
+                chart_line3 = print("Tests", "{:>10}{:>10.2f}{:>10.2f}{:>10.2f}{:>10}".format(number_of_tests, min_test, max_test, mean_test, "n/a"))
+                chart_line4 = print("Programs", "{:>7}{:>10.2f}{:>10.2f}{:>10.2f}{:>10.2f}".format(number_of_programs, min_program, max_program, mean_program, std_program))
+                print()
+                weighted_program2_test1 = ((mean_test * 0.6) + (mean_program * 0.4))
+                return print("The weighted scores is", "{:.2f}".format(weighted_program2_test1))
+
+        elif (len(program_scores) == 0 or len(program_scores) == 1) and len(test_scores) >= 2:
+            number_of_tests = len(test_scores)
+            min_test = min(test_scores)
+            max_test = max(test_scores)
+
+            sum = 0
+            for i in test_scores:
+                sum += i
+            mean_test = sum / len(test_scores)
+
+            count_under_sqrt = 0
+            for i in test_scores:
+                count_under_sqrt += ((i - mean_test) ** 2)
+            std_test = (math.sqrt(count_under_sqrt / 4))
+
+            if len(program_scores) == 0:
+                chart_line1 = print("Type", "{:>11}{:>10}{:>10}{:>10}{:>10}".format("#", "min", "max", "avg", "std"))
+                chart_line2 = print("=" * 56)
+                chart_line3 = print("Tests", "{:>10}{:>10.2f}{:>10.2f}{:>10.2f}{:>10.2f}".format(number_of_tests, min_test, max_test, mean_test, std_test))
+                chart_line4 = print("Programs", "{:>7}{:>10}{:>10}{:>10}{:>10}".format("0", "n/a", "n/a", "n/a", "n/a"))
+                print()
+                weighted_test2_program0 = ((mean_test * 0.6) + 0)
+                return print("The weighted scores is", "{:.2f}".format(weighted_test2_program0))
+            elif len(program_scores) == 1:
+                number_of_programs = len(program_scores)
+                min_program = min(program_scores)
+                max_program = max(program_scores)
+            
+                sum2 = 0
+                for x in program_scores:
+                    sum2 += x
+                mean_program = sum2 / len(program_scores)
+
+                chart_line1 = print("Type", "{:>11}{:>10}{:>10}{:>10}{:>10}".format("#", "min", "max", "avg", "std"))
+                chart_line2 = print("=" * 56)
+                chart_line3 = print("Tests", "{:>10}{:>10.2f}{:>10.2f}{:>10.2f}{:>10.2f}".format(number_of_tests, min_test, max_test, mean_test, std_test))
+                chart_line4 = print("Programs", "{:>7}{:>10.2f}{:>10.2f}{:>10.2f}{:>10}".format(number_of_programs, min_program, max_program, mean_program, "n/a"))
+                print()
+                weighted_test2_program1 = ((mean_test * 0.6) + (mean_program * 0.4))
+                return print("The weighted scores is", "{:.2f}".format(weighted_test2_program1))
+    
+        else:
+            number_of_tests = len(test_scores)
+            min_test = min(test_scores)
+            max_test = max(test_scores)
+
+            sum = 0
+            for i in test_scores:
+                sum += i
+            mean_test = sum / len(test_scores)
+
+            count_under_sqrt = 0
+            for i in test_scores:
+                count_under_sqrt += ((i - mean_test) ** 2)
+            std_test = (math.sqrt(count_under_sqrt / 4))
+
+            number_of_programs = len(program_scores)
+            min_program = min(program_scores)
+            max_program = max(program_scores)
+
+            sum2 = 0
+            for x in program_scores:
+                sum2 += x
+            mean_program = sum2 / len(program_scores)
+
+            count_under_sqrt = 0
+            for x in program_scores:
+                count_under_sqrt += ((x - mean_program) ** 2)
+            std_program = (math.sqrt(count_under_sqrt / 4))
+
+            chart_line1 = print("Type", "{:>11}{:>10}{:>10}{:>10}{:>10}".format("#", "min", "max", "avg", "std"))
+            chart_line2 = print("=" * 56)
+            chart_line3 = print("Tests", "{:>10}{:>10.2f}{:>10.2f}{:>10.2f}{:>10.2f}".format(number_of_tests, min_test, max_test, mean_test, std_test))
+            chart_line4 = print("Programs", "{:>7}{:>10.2f}{:>10.2f}{:>10.2f}{:>10.2f}".format(number_of_programs, min_program, max_program, mean_program, std_program))
+            print()
+            weighted_scores = ((mean_test * 0.6) + (mean_program * 0.4))
+            return print("The weighted scores is", "{:.2f}".format(weighted_scores))
+
+def quit(user_input):
+    '''Provides the menu to the user again, and either continues through the while loop and breaks it.'''
+    if user_input == 'Q' or user_input == 'q':
+        Again = False
+        return Again
+    else:
+        Again = True
+        return Again
+    
+if __name__ == "__main__":
+
+    test_scores = []
+    program_scores = []
+
+    Again = True
+    while Again:
+
+        print("{:>15}\n".format("Grade Menu"), "1 - Add Test\n", "2 - Remove Test\n", "3 - Clear Tests\n", "4 - Add Assignment\n", "5 - Remove Assignment\n", 
+        "6 - Clear Assignments\n", "D - Display Scores\n", "Q - Quit")
+        Choice = get_input()
+        if Choice == '1':
+            get_test(Choice, test_scores)
+            print("test_scores =", end='')
+            print(test_scores)
+            print("program_scores =", end='')
+            print(program_scores)
+        elif Choice == '2':
+            get_test(Choice, test_scores)
+            print("test_scores =", end='')
+            print(test_scores)
+            print("program_scores =", end='')
+            print(program_scores)
+        elif Choice == '3':
+            get_test(Choice, test_scores)
+            print("test_scores =", end='')
+            print(test_scores)
+            print("program_scores =", end='')
+            print(program_scores)
+        elif Choice == '4':
+            get_program(Choice, program_scores)
+            print("test_scores =", end='')
+            print(test_scores)
+            print("program_scores =", end='')
+            print(program_scores)
+        elif Choice == '5':
+            get_program(Choice, program_scores)
+            print("test_scores =", end='')
+            print(test_scores)
+            print("program_scores =", end='')
+            print(program_scores)
+        elif Choice == '6':
+            get_program(Choice, program_scores)
+            print("test_scores =", end='')
+            print(test_scores)
+            print("program_scores =", end='')
+            print(program_scores)
+        elif Choice == 'D' or Choice == 'd':
+            display_scores(Choice, test_scores, program_scores)
+        elif Choice == 'Q' or Choice == 'q':
+            quit(Choice)
+        else:
+            print("Error, you must enter either 1 2 3 4 5 6 D or Q")
+
+        Again = quit(Choice)
