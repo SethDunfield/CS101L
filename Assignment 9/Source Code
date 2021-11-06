@@ -1,0 +1,197 @@
+#Seth Dunfield, CompSci-101L-0004, Lab Assignment 9: Dictionaries, November 6th, 2021
+
+import csv
+
+def month_from_number(num : int):
+    '''Takes in an int as a parameter and returns a string. The num is expected to be 1 to 12 and returns the string result for the month,
+    as in 'January'.'''
+    try:
+        months = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'August', 9: 'September',
+        10: 'October', 11: 'November', 12: 'December'}
+        if num == 1:
+            return months[1]
+        elif num == 2:
+            return months[2]
+        elif num == 3:
+            return months[3]
+        elif num == 4:
+            return months[4]
+        elif num == 5:
+            return months[5]
+        elif num == 6:
+            return months[6]
+        elif num == 7:
+            return months[7]
+        elif num == 8:
+            return months[8]
+        elif num == 9:
+            return months[9]
+        elif num == 10:
+            return months[10]
+        elif num == 11:
+            return months[11]
+        elif num == 12:
+            return months[12]
+        else:
+            print("Not a valid number. Month must be 1 - 12.")
+    except (TypeError, ValueError):
+        print("Please enter a number between 1 - 12.")
+
+def read_in_file(file_name : str):
+    '''Takes in a filename as a string and returns a list of lists of contents. Each sublist is a row from the file.
+    The file is expected to be a csv.'''
+    list_data = []
+    file = open(file_name, encoding="utf-8")
+    file.csv = csv.reader(file)
+    for line in file.csv:
+        list_data.append(line)
+    file.close()
+    return list_data
+
+def create_reported_data_dict(data_list : list):
+    '''Takes in a list, which is the list of lists returned from the read_in_file function above and returns a dictionary
+    where the key is a date of the year found at index 1, and the value is how many times a crime occurred on that date
+    as read from the file. Actual date, like '03/19/2019': 2'''
+    key_list = []
+    for line in data_list[1:]:
+        key_list.append(line[1])
+    key_count = {}
+    for key in key_list:
+        key_count[key] = key_count.get(key, 0) + 1
+    return key_count
+
+def create_reported_month_dict(data_list : list):
+    '''Takes a list, which is the list of lists returned from the read_in_file function and returns a dictionary
+    where the key is the month of the offense, and the value is how many times a crime occurred on that date as read from the file.
+    The month, like 3: 2'''
+    key_list = []
+    for line in data_list[1:]:
+        key_list.append(line[1][0])
+    key_count = {}
+    for key in key_list:
+        key_count[key] = key_count.get(key, 0) + 1
+    return key_count
+
+def create_offense_dict(data_list : list):
+    '''Takes a list, which is the list of lists returned from the read_in_file function and returns a dictionary
+    where the key is the offense and the value is how many times that offense occurs. Offense is column index 7.'''
+    key_list = []
+    for line in data_list[1:]:
+        key_list.append(line[7])
+    key_count = {}
+    for key in key_list:
+        key_count[key] = key_count.get(key, 0) + 1
+    return key_count
+
+def create_list_offense(data_list : list):
+    '''Takes a list, which is the list of lists returned from the read_in_file function and returns a list of offenses that
+    occurred in the file.'''
+    key_list = []
+    for line in data_list[1:]:
+        key_list.append(line[7])
+    return key_list
+
+def create_offense_by_zip(data_list : list):
+    '''Takes a list, which is the list of lists returned from the read_in_file function and returns a dictionary
+    where the key is the offense and the value is another dictionary. The sub dictionary has a key for the zip-code
+    and a value that is how many times this offense occurs in this zip-code. Offense is column index 7 and Zip-code is column index 13.'''
+
+    result = {}
+    for line in data_list[1:]:
+        offense = line[7].strip()
+        zip_code = line[13].strip()
+        if offense not in result:
+            result[offense] = {}
+        result[offense][zip_code] = result[offense].get(zip_code, 0) + 1
+
+    return result
+
+def month_highest_crime(data_list : list):
+    '''Takes in the list of lists and returns the month with the highest number of crimes.'''
+    key_list = []
+    for line in data_list[1:]:
+        token = line[1].split('/')
+        key_list.append(token[0])
+    key_count = {}
+    for key in key_list:
+        key_count[key] = key_count.get(key, 0) + 1
+   
+    max_value = None
+    max_key = None
+    for key, value in key_count.items():
+        if max_value is None or value > max_value:
+            max_value = value
+            max_key = key
+    key_value_tuple = (max_key, max_value)
+    return key_value_tuple
+
+def offense_highest_crime(data_list):
+    '''highest offense crime'''
+    key_list = []
+    for line in data_list[1:]:
+        token = line[7].split('/')
+        key_list.append(token[0])
+    key_count = {}
+    for key in key_list:
+        key_count[key] = key_count.get(key, 0) + 1
+   
+    max_value = None
+    max_key = None
+    for key, value in key_count.items():
+        if max_value is None or value > max_value:
+            max_value = value
+            max_key = key
+    key_value_tuple = (max_key, max_value)
+    return key_value_tuple
+
+if __name__ == "__main__":
+
+    Again = True
+    while Again:
+        try:
+            file_name = input("Enter the name of the crime data file:\n==> ")
+            data = read_in_file(file_name)
+            break
+        except FileNotFoundError:
+            print("Could not find the file specified.", "\"" + file_name + "\"", "not found. Enter correct file name.")
+            continue
+        except IOError:
+            print("There is an IO Error with", file_name)
+            continue
+
+    print()
+    top_month, top_month_num = month_highest_crime(data)
+    if top_month_num == 1:
+        print("The month with the highest # of crimes is {} with {} offense"
+        .format(month_from_number(int(top_month)), top_month_num))
+    else:
+        print("The month with the highest # of crimes is {} with {} offenses"
+        .format(month_from_number(int(top_month)), top_month_num))
+
+    top_offense, top_offense_num = offense_highest_crime(data)
+    if top_offense_num == 1:
+        print("The offense with the highest # of crimes is {} with {} offense"
+        .format(top_offense, top_offense_num))
+    else:
+        print("The offense with the highest # of crimes is {} with {} offenses"
+        .format(top_offense, top_offense_num))
+
+    try:
+        while True:
+            offense_list = create_list_offense(data)
+            offense = input("Enter an offense:\n==>")
+            if offense in offense_list:
+                print()
+                print(offense, "offenses by Zip Code")
+                print("{:20}{:10}".format("Zip Code", "# of Offenses"))
+                print("=" * 33)
+                break
+            else:
+                print("Please enter a valid offense.")
+    except (TypeError, ValueError, NameError):
+        print("Please enter a valid offense.")
+
+    offense_by_zip = create_offense_by_zip(data)
+    print("{:20}{:>13}".format(data[0][13], data[0][7] + "s"))
+    for key, value in offense_by_zip[offense].items():
+        print("{:<20}{:>13}".format(key, value))
