@@ -1,0 +1,99 @@
+#Seth Dunfield, CompSci-101L-004L, Lab Assignment 10, November 13th, 2021
+import string
+def read_in_file(prompt, mode):
+    while True:
+        try:
+            file_name = input(prompt)
+            file = open(file_name, mode)
+            file_data = file.readlines()
+            file.close()
+            return file_data
+        except FileNotFoundError:
+            print("Could not open the file:", file_name)
+        except IOError:
+            print("There is an IO Error with this file:", file_name)
+
+def tokens_of_parce_file(data):
+    '''takes in the data of file and makes a list of all the words as tokens of the parce file.'''
+    words_list = []
+    for line in data:
+        tokens = line.split(' ')
+        for word in tokens:
+            strip_word = word.strip()
+            if strip_word.isalpha() == True:
+                words_list.append(strip_word)
+            else:
+                translate_word = strip_word.translate(str.maketrans('', '', string.punctuation)) #I apologize for this line of code. I had to google how to get rid of the puncuatation.
+                words_list.append(translate_word)
+
+    for i in range(len(words_list)):
+        words_list[i] = words_list[i].lower()
+
+    return words_list
+
+def unique_words(words_list):
+    '''takes in the list of words and creates a list of unique words that are more than 3 letters.'''
+    unique_list = []
+    for word in words_list:
+        if word not in unique_list and len(word) > 3:
+            unique_list.append(word)
+        else:
+            continue
+    
+    return unique_list
+
+def unique_words_freq(unique_list, list_of_words):
+    '''takes in the unique list and counts how many times a unique word appears in the data.'''
+    unique_dict = {}
+
+    for word in unique_list:
+        x = list_of_words.count(word)
+        unique_dict[word] = x
+
+    return unique_dict
+
+def count_unique_words(unique_dict):
+    unique_count = len(unique_dict)
+    only_once = []
+    for key in unique_dict:
+        if unique_dict[key] == 1:
+            only_once.append(unique_dict[key])
+        else:
+            continue
+    only_once_count = len(only_once)        
+    return unique_count, only_once_count
+
+
+if __name__ == "__main__":
+
+    data = read_in_file("Enter the name of the file to open:\n==>", 'r')
+
+    tokens_of_parce_file(data)
+    words_list = tokens_of_parce_file(data)
+
+    unique_words(words_list)
+    unique_list = unique_words(words_list)
+
+    unique_words_freq(unique_list, words_list)
+    unique_dict = unique_words_freq(unique_list, words_list)
+
+    count_unique_words(unique_dict)
+    unique_length, only_once = count_unique_words(unique_dict)
+
+    sort_by_values = sorted(unique_dict.items(), key = lambda elem : elem[1], reverse=True)
+    sort_dict = dict(sort_by_values)
+
+    print("Most frequently used words")
+    print("{:>2}{:>20}{:>38}".format("#", "Word", "Freq."))
+    print("="*60) 
+    
+    count = 1
+    for i in sort_dict:
+        print("{:>2}{:>20}{:>38}".format(count, i, sort_dict[i]))
+        count += 1
+        if count > 10:
+            break
+    
+    print("There are", only_once, "words that occur only once.")
+    print("There are", unique_length, "unique words in the document.")
+    
