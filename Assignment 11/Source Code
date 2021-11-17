@@ -1,0 +1,50 @@
+#Seth Dunfield, CompSci 101-004L, Lab Assignment 11, November 21st, 2021
+
+import time
+
+class Clock:
+    def __init__(self, hour=0, minute=0, second=0, type=0):
+        self.hour = hour
+        self.minute = minute
+        self.second = second
+        self.type = type
+
+    def tick(self):
+        self.second += 1
+        self.second = self.second
+        if self.second >= 60:
+            self.minute += 1
+            self.second = 0
+        if self.minute >= 60:
+            self.hour += 1
+            self.minute = 0
+        if self.hour > 23:
+            self.hour = 0
+
+        if self.type == 0:
+            return '{:02}:{:02}:{:02}'.format(self.hour, self.minute, self.second)
+        if self.type == 1:
+            if self.hour >= 12 and self.hour < 24:
+                return '{:02}:{:02}:{:02} PM'.format(self.hour, self.minute, self.second)
+            elif self.hour >= 0 and self.hour <= 11:
+                return '{:02}:{:02}:{:02} AM'.format(self.hour, self.minute, self.second)
+    
+    def __str__(self):
+        if self.type == 0:
+            return '{:02}:{:02}:{:02} PM'.format(self.hour, self.minute, self.second)
+        elif self.hour >= 0 and self.hour <= 11:
+            return '{:02}:{:02}:{:02} AM'.format(self.hour, self.minute, self.second)
+
+if __name__ == "__main__":
+
+    clock_type = int(input("24-hour clock or 12-hour clock (Enter 0 for 24-hour clock, or 1 for 12-hour clock:\n==>"))
+    user_hour = int(input("What is the current hour:\n==>"))
+    user_minute = int(input("What is the current minute:\n==>"))
+    user_second = int(input("What is the current second:\n==>"))
+
+    clock = Clock(user_hour, user_minute, user_second, clock_type)
+
+    while True:
+        print(clock.tick())
+        user_second += 1
+        time.sleep(1)
