@@ -1,0 +1,99 @@
+#Seth Dunfield, CompSci 101-004L, Assignment 12-Inheritance, Due Date: December 5th, 2021
+
+import turtle
+
+class Point(object):
+    def __init__(self, x, y, color):
+        self.x = x
+        self.y = y
+        self.color = color
+
+    def draw(self):
+        turtle.penup()
+        turtle.goto(self.x, self.y)
+        turtle.pendown()
+        turtle.color(self.color)
+        turtle.setheading(0)
+        self.draw_action()
+
+    def draw_action(self):
+        turtle.dot()
+
+class Box(Point):
+    def __init__(self, x1, y1, width, height, color):
+        super().__init__(x1, y1, color)
+        self.width = width
+        self.height = height
+
+    def draw_action(self):
+        '''Draws a Box'''
+        turtle.forward(self.width)
+        turtle.right(90)
+        turtle.forward(self.height)
+        turtle.right(90)
+        turtle.forward(self.width)
+        turtle.right(90)
+        turtle.forward(self.height)
+    
+    def get_x(self):
+        return self.x
+    def get_y(self):
+        return self.y
+    def get_width(self):
+        return self.width
+    def get_height(self):
+        return self.height
+    def get_color(self):
+        return self.color
+
+class BoxFilled(Box):
+    def __init__(self, x1, y1, width, height, color, fillcolor):
+        super().__init__(x1, y1, width, height, color)
+        self.fillcolor = fillcolor
+
+    def draw_action(self):
+        turtle.fillcolor(self.fillcolor)
+        turtle.begin_fill()
+        Box.draw_action(self)
+        turtle.end_fill()
+
+    def get_fill_color(self):
+        return self.fillcolor
+
+class Circle(Point):
+    def __init__(self, x1, y1, radius, color):
+        super().__init__(x1, y1, color)
+        self.radius = radius
+
+    def draw_action(self):
+        turtle.circle(self.radius)
+
+    def get_x(self):
+        return self.x
+    def get_y(self):
+        return self.y
+    def get_radius(self):
+        return self.radius
+    def get_color(self):
+        return self.color
+
+class CircleFilled(Circle):
+    def __init__(self, x1, y1, radius, color, fillcolor):
+        super().__init__(x1, y1, radius, color)
+        self.fillcolor = fillcolor
+
+    def draw_action(self):
+        turtle.fillcolor(self.fillcolor)
+        turtle.begin_fill()
+        Circle.draw_action(self)
+        turtle.end_fill()
+
+    def get_fill_color(self):
+        return self.fillcolor
+
+if __name__ == "__main__":
+
+    b = BoxFilled(1, 2, 75, 100, "orange", "red")
+    b.draw()
+    c = CircleFilled(1, 2, 50, "blue", "green")
+    c.draw()
