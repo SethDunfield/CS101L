@@ -1,0 +1,68 @@
+#Seth Dunfield, CompSci 1010L, Lab Assignment 13: Unit Testing, Due Date: December 12th, 2021
+
+import math
+
+def total(values=[]):
+    '''Takes in a list of numbers that adds all the numbers 
+    and returns the total of those numbers as a float'''
+    total_num = 0
+    for i in range(len(values)):
+        total_num += values[i]
+
+    if type(total_num) == int:
+        return int(total_num)
+    else:
+        return float(total_num)
+
+def average(values=[]):
+    '''Takes a list of numbers that returns the average of those numbers passed through
+    and return those as a float'''
+    total_num = 0
+    for i in range(len(values)):
+        total_num += values[i]
+
+    try:
+        average_num = total_num / len(values)
+    except ZeroDivisionError:
+        return math.nan
+    
+    if type(average_num) == int:
+        return int(average_num)
+    elif type(average_num) == float:
+        return float(average_num)
+    else:
+        print("Please enter integers")
+
+def median(values=[]):
+    '''returns the median of the list of numbers. If odd, sort and return the middle number.
+    If even, sort and take the average of the two middle numbers.'''
+    try:
+        if values == []:
+            raise ValueError("Received a Value Error")
+        else:
+            values.sort()
+            median_num = len(values) / 2
+            if len(values) % 2 != 0:
+                math.floor(median_num)
+                return values[int(median_num)]
+            else: 
+                even_median = (values[int(median_num)] + (values[int(median_num - 1)])) / 2
+                return "{:.1f}".format(even_median)
+    except ValueError as excpt:
+        print(excpt)
+    
+if __name__ == "__main__":
+
+    values = []
+    length_of_list = int(input("Enter the length of numbers you want:\n==> "))
+    
+    for i in range(0, length_of_list):
+        num = int(input("Enter number:\n==> "))
+        values.append(num)
+
+    values.sort()
+    print(values)
+    print("The total of your numbers:\n{}".format(total(values)))
+    print("The average of your numbers:\n{}".format(average(values)))
+    print("The median of your numbers:\n{}".format(median(values)))
+    
